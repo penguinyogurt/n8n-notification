@@ -15,6 +15,7 @@ Full-stack dashboard application for n8n agent notifications with Supabase integ
 - Beautiful, modern dashboard UI
 - Real-time updates from Supabase
 - Group notifications by source (Email, GitHub, Slack, etc.)
+- **AI-powered summaries** for Slack and GitHub using Groq
 - Search and filter functionality
 - Separate To-Do List page
 - Kanban-style Task Board with drag-and-click functionality
@@ -38,7 +39,10 @@ npm install
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+GROQ_API_KEY=your_groq_api_key
 ```
+
+**Note:** Get your Groq API key from [https://console.groq.com/keys](https://console.groq.com/keys). The Groq API is used for generating AI summaries of Slack and GitHub notifications.
 
 ### 3. Create Database Table
 
@@ -157,6 +161,33 @@ Update a notification by ID.
 
 ### DELETE `/api/notifications/[id]`
 Delete a notification by ID.
+
+### POST `/api/summarize`
+Generate AI summaries for Slack and GitHub notifications using Groq.
+
+**Request Body:**
+```json
+{
+  "source": "Slack",
+  "messages": [
+    {
+      "id": "...",
+      "notification": "...",
+      "created_at": "..."
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "summary": "AI-generated summary of the messages",
+  "source": "Slack",
+  "messageCount": 5
+}
+```
 
 ### GET `/api/stats`
 Get statistics about notifications (total count, todo count, by source, etc.).
