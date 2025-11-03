@@ -215,30 +215,58 @@ export default function Dashboard() {
           </div>
         ) : (
           <>
+            {/* Summary cards for Slack and GitHub */}
+            {(groupedNotifications['Slack']?.length > 0 || groupedNotifications['GitHub']?.length > 0) && (
+              <div className="grid grid-cols-1 gap-4 mb-6 lg:grid-cols-2">
+                {groupedNotifications['Slack']?.length > 0 && (
+                  <SummaryCard
+                    source="Slack"
+                    notifications={groupedNotifications['Slack']}
+                    icon={
+                      <svg className="size-5" fill="none" viewBox="0 0 48 48">
+                        <g clipPath="url(#clip0_105_23)">
+                          <path d="M11 31C8.23858 31 6 28.7614 6 26V15C6 12.2386 8.23858 10 11 10C13.7614 10 16 12.2386 16 15V26C16 28.7614 13.7614 31 11 31Z" fill="#36C5F0"></path>
+                          <path d="M17 31C17 33.7614 19.2386 36 22 36C24.7614 36 27 33.7614 27 31V20C27 17.2386 24.7614 15 22 15C19.2386 15 17 17.2386 17 20V31Z" fill="#2EB67D"></path>
+                          <path d="M37 17C39.7614 17 42 19.2386 42 22V33C42 35.7614 39.7614 38 37 38C34.2386 38 32 35.7614 32 33V22C32 19.2386 34.2386 17 37 17Z" fill="#ECB22E"></path>
+                          <path d="M31 17C31 14.2386 28.7614 12 26 12C23.2386 12 21 14.2386 21 17V28C21 30.7614 23.2386 33 26 33C28.7614 33 31 30.7614 31 28V17Z" fill="#E01E5A"></path>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_105_23">
+                            <rect fill="white" height="48" width="48"></rect>
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    }
+                  />
+                )}
+                {groupedNotifications['GitHub']?.length > 0 && (
+                  <SummaryCard
+                    source="GitHub"
+                    notifications={groupedNotifications['GitHub']}
+                    icon={
+                      <svg className="size-5" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.19.01-.82.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21-.15.46-.55.38A8.013 8.013 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+                      </svg>
+                    }
+                  />
+                )}
+              </div>
+            )}
+
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               {sources
                 .filter((source) => !hiddenSources.includes(source.name))
                 .map((source) => (
-                  <div key={source.name} className="flex flex-col gap-4">
-                    {/* Show summary above its corresponding notification block for Slack and GitHub */}
-                    {(source.name === 'Slack' || source.name === 'GitHub') && 
-                     groupedNotifications[source.name]?.length > 0 && (
-                      <SummaryCard
-                        source={source.name}
-                        notifications={groupedNotifications[source.name]}
-                        icon={source.icon}
-                      />
-                    )}
-                    <SourceCard
-                      source={source.name}
-                      notifications={source.notifications}
-                      icon={source.icon}
-                      onDelete={handleDeleteNotification}
-                      onToggleExpand={handleToggleExpand}
-                      expandedNotifications={expandedNotifications}
-                      onHideSource={handleHideSource}
-                    />
-                  </div>
+                  <SourceCard
+                    key={source.name}
+                    source={source.name}
+                    notifications={source.notifications}
+                    icon={source.icon}
+                    onDelete={handleDeleteNotification}
+                    onToggleExpand={handleToggleExpand}
+                    expandedNotifications={expandedNotifications}
+                    onHideSource={handleHideSource}
+                  />
                 ))}
             </div>
             {hiddenSources.length > 0 && (
