@@ -67,9 +67,7 @@ export default function SourceCard({
 
   const handleDeleteClick = (e: React.MouseEvent, notificationId: string) => {
     e.stopPropagation()
-    if (confirm('Are you sure you want to delete this notification?')) {
-      onDelete?.(notificationId)
-    }
+    onDelete?.(notificationId)
   }
 
   const handleMenuClick = (e: React.MouseEvent) => {
@@ -78,10 +76,8 @@ export default function SourceCard({
   }
 
   const handleHideSourceClick = () => {
-    if (confirm(`Hide all ${source} notifications?`)) {
-      onHideSource?.(source)
-      setShowMenu(false)
-    }
+    onHideSource?.(source)
+    setShowMenu(false)
   }
 
   return (

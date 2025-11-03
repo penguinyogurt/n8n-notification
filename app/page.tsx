@@ -213,40 +213,42 @@ export default function Dashboard() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {sources
-              .filter((source) => !hiddenSources.includes(source.name))
-              .map((source) => (
-                <SourceCard
-                  key={source.name}
-                  source={source.name}
-                  notifications={source.notifications}
-                  icon={source.icon}
-                  onDelete={handleDeleteNotification}
-                  onToggleExpand={handleToggleExpand}
-                  expandedNotifications={expandedNotifications}
-                  onHideSource={handleHideSource}
-                />
-              ))}
-          </div>
-          {hiddenSources.length > 0 && (
-            <div className="mt-6">
-              <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
-                Hidden sources:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {hiddenSources.map((sourceName) => (
-                  <button
-                    key={sourceName}
-                    onClick={() => handleShowSource(sourceName)}
-                    className="px-3 py-1 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-sm text-text-light-secondary dark:text-text-dark-secondary hover:text-text-light-primary dark:hover:text-text-dark-primary"
-                  >
-                    {sourceName} <span className="material-symbols-outlined text-xs align-middle">close</span>
-                  </button>
+          <>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {sources
+                .filter((source) => !hiddenSources.includes(source.name))
+                .map((source) => (
+                  <SourceCard
+                    key={source.name}
+                    source={source.name}
+                    notifications={source.notifications}
+                    icon={source.icon}
+                    onDelete={handleDeleteNotification}
+                    onToggleExpand={handleToggleExpand}
+                    expandedNotifications={expandedNotifications}
+                    onHideSource={handleHideSource}
+                  />
                 ))}
-              </div>
             </div>
-          )}
+            {hiddenSources.length > 0 && (
+              <div className="mt-6">
+                <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
+                  Hidden sources:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {hiddenSources.map((sourceName) => (
+                    <button
+                      key={sourceName}
+                      onClick={() => handleShowSource(sourceName)}
+                      className="px-3 py-1 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-sm text-text-light-secondary dark:text-text-dark-secondary hover:text-text-light-primary dark:hover:text-text-dark-primary"
+                    >
+                      {sourceName} <span className="material-symbols-outlined text-xs align-middle">close</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
