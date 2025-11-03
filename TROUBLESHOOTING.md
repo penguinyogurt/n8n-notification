@@ -144,3 +144,4 @@ In your n8n HTTP Request node:
 3. Try accessing `http://localhost:3000` in your browser (should show the dashboard)
 4. If dashboard works but webhook doesn't, check the API route file for syntax errors
 
+

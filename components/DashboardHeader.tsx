@@ -75,14 +75,13 @@ export default function DashboardHeader({ onSearchChange }: { onSearchChange?: (
           />
         </label>
         <div className="flex gap-2">
-          <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary">
+          <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary hover:bg-card-light dark:hover:bg-card-dark transition-colors">
             <span className="material-symbols-outlined">notifications</span>
           </button>
-          <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary">
+          <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary hover:bg-card-light dark:hover:bg-card-dark transition-colors">
             <span className="material-symbols-outlined">settings</span>
           </button>
         </div>
-        <div className="h-10 w-10 shrink-0 rounded-full bg-cover bg-center" data-alt="Alex's user profile picture" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCHfpyPqD7zXnj6TUu1O8I6p368jXCD2enfTNgfIpmciNcY6QCPFHix9ZadhUXfb9-VIAbKz-2rvG3kTDiipIXvhTs3LBfOBsUIL7hVOrf8oxu0KpqjklMFp_qzMK9Awv2oq1NpVJhf2r2krbLxy1LZW8fMZHLoPR4MKvH-KQL3QYUdKg_md4h1Ya2v306_FLmD3z7JWB3bVG0CWQSwNrKiEdjzfmyvlpQooOAxWxR8AD2M5I6MGmwEAsS9LTwGE_uDxhiuuqTAb37l")' }}></div>
       </div>
     </header>
   )

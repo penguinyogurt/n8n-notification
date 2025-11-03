@@ -16,6 +16,8 @@ export default function Dashboard() {
   })
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [hiddenSources, setHiddenSources] = useState<string[]>([])
+  const [expandedNotifications, setExpandedNotifications] = useState<Set<string>>(new Set())
 
   // Fetch notifications
   const fetchNotifications = async () => {
@@ -146,9 +148,38 @@ export default function Dashboard() {
     }
   })
 
-  const handleNotificationClick = (notification: Notification) => {
-    // Handle notification click - could open a modal, navigate, etc.
-    console.log('Notification clicked:', notification)
+  const handleDeleteNotification = async (notificationId: string) => {
+    try {
+      const response = await fetch(`/api/notifications/${notificationId}`, {
+        method: 'DELETE',
+      })
+      if (response.ok) {
+        setNotifications(notifications.filter((n) => n.id !== notificationId))
+        fetchStats()
+      }
+    } catch (error) {
+      console.error('Error deleting notification:', error)
+    }
+  }
+
+  const handleToggleExpand = (notificationId: string) => {
+    setExpandedNotifications((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(notificationId)) {
+        newSet.delete(notificationId)
+      } else {
+        newSet.add(notificationId)
+      }
+      return newSet
+    })
+  }
+
+  const handleHideSource = (sourceName: string) => {
+    setHiddenSources((prev) => [...prev, sourceName])
+  }
+
+  const handleShowSource = (sourceName: string) => {
+    setHiddenSources((prev) => prev.filter((s) => s !== sourceName))
   }
 
   if (loading) {
@@ -168,11 +199,11 @@ export default function Dashboard() {
       <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <div className="mb-8">
           <h1 className="text-4xl font-black tracking-tighter text-text-light-primary dark:text-text-dark-primary">
-            Welcome back, Alex!
+            Dashboard
           </h1>
           <p className="text-base text-text-light-secondary dark:text-text-dark-secondary">
             You have{' '}
-            <span className="font-bold text-primary">{stats.total} new update{stats.total !== 1 ? 's' : ''}</span>. Here's what you missed.
+            <span className="font-bold text-primary">{stats.total} update{stats.total !== 1 ? 's' : ''}</span>.
           </p>
         </div>
         {searchQuery && filteredNotifications.length === 0 ? (
@@ -183,16 +214,39 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {sources.map((source) => (
-              <SourceCard
-                key={source.name}
-                source={source.name}
-                notifications={source.notifications}
-                icon={source.icon}
-                onItemClick={handleNotificationClick}
-              />
-            ))}
+            {sources
+              .filter((source) => !hiddenSources.includes(source.name))
+              .map((source) => (
+                <SourceCard
+                  key={source.name}
+                  source={source.name}
+                  notifications={source.notifications}
+                  icon={source.icon}
+                  onDelete={handleDeleteNotification}
+                  onToggleExpand={handleToggleExpand}
+                  expandedNotifications={expandedNotifications}
+                  onHideSource={handleHideSource}
+                />
+              ))}
           </div>
+          {hiddenSources.length > 0 && (
+            <div className="mt-6">
+              <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
+                Hidden sources:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {hiddenSources.map((sourceName) => (
+                  <button
+                    key={sourceName}
+                    onClick={() => handleShowSource(sourceName)}
+                    className="px-3 py-1 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark text-sm text-text-light-secondary dark:text-text-dark-secondary hover:text-text-light-primary dark:hover:text-text-dark-primary"
+                  >
+                    {sourceName} <span className="material-symbols-outlined text-xs align-middle">close</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         )}
       </main>
     </div>
